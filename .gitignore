@@ -1,0 +1,9 @@
+syntax: glob
+*/target/**
+*.class
+*/.boot
+*/target
+.idea
+*.iml
+*.tmp
+target/
