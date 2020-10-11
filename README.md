@@ -5,19 +5,21 @@
 ### By: Moshe Dahan and Yuval Assayag
 ### Instructors: Dr. Yehuda Ben-Shimol and Mr. David Leon
 
-**Overview**			
+**Overview**
+
 Our project simulates a FIFA game. It is based on Erlang, OTP interface, and graphics by WxWidgets.
 The game includes two rival teams that work according to two different strategies, a referee, and a ball. Each character moves across the soccer field.
 
-
 **Characters**
+
 There are 5 types of characters: 
 Computer players - divided into two teams, moves according to its team strategy. When owning the ball the player would try to move forward to the rival team’s net and to kick the ball to the direction of the net. The player’s kick destination is randomized.
 Two goalies - one for each team. The goalie movement is restricted to the area of their team’s net, the job is to protect the net. 
 A ball - the ball is an important component of the game it can be attached to a running player in case it fetches it. Besides, it can be static if none possesses it or kicked if the player applies the kick action to it. The ball is implemented by FSM - using gen_statem. If the ball coordinates are inside the net then the relevant group gains a point. The ball location is set according to the location of the player that possesses it.
 A referee - the referee watches the ball from a close distance.
 
-**Wx Server Responsibilities** 
+**Wx Server Responsibilities**
+
 Initiation and monitor of the 4 regular servers
 Rearrange all servers’ responsibilities in case of a crash.
 Manages the game’s graphics.
@@ -28,11 +30,13 @@ Announce when the game is over.
 
 
 **Monitors (Regular Servers)**
+
 Each server responsible for a certain slice of the screen - depending on how many servers are running at the moment. 
 In initialization time there are 4 regular servers running each of them responsible on a vertical rectangle which represents a quarter of the soccer field.
 Each screen monitors the objects within its boundaries.  
 
 **Who Is Entitled Of A Process?!**
+
 - Each player.
 - The ball.
 - Each goalie.
@@ -40,10 +44,12 @@ Each screen monitors the objects within its boundaries.
 All these processes run simultaneously and managed by the wx Widget server.
 
 **Strategies**
+
 - The first team strategy is to work randomly across the soccer field trying to block and score goals.
 - The second team strategy is a more defensive approach at all times half of the group players are on the defense trying to block the rival team to score a goal. The rest of the players can move more freely across the field (both attack and defense).
 
 **Project Objective**
+
 Our goal in this project was to create a distributed FIFA game using the Erlang language and Functional Programming knowledge we have gained along the course.	
 While building the simulation, we tried to:
 Maximize usage of  OTP and native Erlang modules, messaging, capabilities, etc. 						
@@ -51,7 +57,6 @@ Isolate the game components and enable them to run concurrently.
 Resiliency to monitor crashes.
 Design 	
 The design is based on OTP in a master-slave behavior. The structure and hierarchy are shown in the figure below. Following this OTP model simplified the management of the process and servers. To monitor the existence of the processes we used start_link and monitor Erlang’s functions. In the case of a crash the master (wxWidget server) responsible to the divide the work to its remaining slaves (the other servers). 
-
 
 **Files Description**
 
@@ -79,8 +84,8 @@ We decided to support servers crash handling under the assumption that several s
 How does it work? 
 In initiation time there are 4 monitors under the master (Wx Server). When a server is losing the connection with its master, the master takes charge and assigns the dead server’s job to the remaining servers and divides the field to the other servers. In this way, all the components that once was supervised by the lost server now have a new supervisor server to approach with messages. A dead server can reestablish the connection with the master and regain his power over a new slice of the field. 
 
-
 **Game Over**
+
 The game is over when one of the teams gains 3 points.
 
 How does a team gain a point?
@@ -100,6 +105,7 @@ Each time points.
 These statistics are maintained by the ETS (DB) and resilient to servers crash as these ETS are maintained by the WX server.
 
 **Coding Techniques**
+
 An exciting fact about the code is that it is very concise and short in contrast to its vast functionalities. 
 We were surprised when we measured the number of lines.
 In a non-functional language, the code length would probably have been at least doubled.
@@ -110,6 +116,7 @@ Using gen_server behavior is an easy way to manage async communication.
 Using gen_statem behavior to implement FSM as we have learned.
 
 **Main Difficulties and Obstacles**
+
 Understanding the WxWidget.
 Implement the async communication between the servers - using `gen_server`.
 Distribute the game over 4 monitors (split screens).
@@ -117,10 +124,10 @@ Trying to implement a complex game with a lot of logic and components that work 
 Working together remotely on the Zoom platform. 
 
 **Conclusions**
+
 Scalability should be taken care of in the planning stage.
 ETS is a good source for sharing data between processes.
 It is critical to plan the gen_server and gen_statem prior to the coding phase.
-
 
 
 **User Manual**
@@ -165,8 +172,3 @@ wxserver:startme().
 
 To run the project on five different computers, you have to open 5 terminals each terminal on different computers, in the path that contains all of the erlang files (.erl) and follow the same instructions described above.
 
-**Links**
-
-GitHub Repository
-Youtube Video
-Presentation
