@@ -18,7 +18,7 @@
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2, terminate/2]).
 
 
--record(stateRecord, {monitorName, etsAll, etsToDelete,  pid_ReceiveBlock, monitorId, monitorsNumber, monitorsNames}).
+-record(stateRecord, {monitorName, etsAll, etsToDelete, pid_ReceiveBlock, monitorId, monitorsNumber, monitorsNames}).
 
 
 startme(Name, ID, MonitorsNumber, MonitorsNames) ->
@@ -53,14 +53,14 @@ insertComponent(Name, ID, Arguments) ->
 addControlledplayer(Name, {ID, Location, OldOrNew}) ->
   gen_server:cast({global, Name}, {addControlledplayer, ID, Location, OldOrNew}).
 
-addAPlayer(Name, {ID, Location, Dest }) ->
+addAPlayer(Name, {ID, Location, Dest}) ->
   gen_server:cast({global, Name}, {addAPlayer, ID, Location, Dest}).
 
 addListOfPlayers(Name, List) ->
   gen_server:cast({global, Name}, {addListOfPlayers, List}).
 
 addBall(Name, {ID, Location, Destination, Exist}) ->
-  gen_server:cast({global, Name}, {addBall,ID, Location, Destination, Exist}).
+  gen_server:cast({global, Name}, {addBall, ID, Location, Destination, Exist}).
 
 refreshLocation(Name, BallOrPlayerID, Location) ->
   gen_server:cast({global, Name}, {refreshLocation, BallOrPlayerID, Location}).
@@ -161,7 +161,7 @@ handle_cast({refreshActiveMonitors, ID, MonitorsNumber, MonitorsNames, Component
     end
                 end,
   lists:foreach(FunForEach1, AllPlayersL),
-  FunForEach2 = fun({_, {ObjType, Location, Args},MyId}) ->
+  FunForEach2 = fun({_, {ObjType, Location, Args}, MyId}) ->
     case ObjType of
       controlledplayer ->
         controlledplayer:startme(controlledplayer, Location, Data#stateRecord.monitorName);
@@ -198,7 +198,7 @@ handle_info(refreshMonitor, Data) ->
   EtsAll = ets:tab2list(Data#stateRecord.etsAll),
   EtsToDelete = ets:tab2list(Data#stateRecord.etsToDelete),
   WxPID = global:whereis_name(main),
-  wxserver:applyChangesInDataBase(EtsAll, EtsToDelete,  Data#stateRecord.monitorName, WxPID),
+  wxserver:applyChangesInDataBase(EtsAll, EtsToDelete, Data#stateRecord.monitorName, WxPID),
   ets:delete_all_objects(Data#stateRecord.etsToDelete),
   erlang:send_after(?MONITOR_REFRESH_RATE, self(), refreshMonitor),
   {noreply, Data};

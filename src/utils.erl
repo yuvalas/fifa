@@ -81,7 +81,7 @@ getComponentsLayoutList() ->
     {2.9, {1350, 750}, {530, 300}}],
   List.
 
-printToScreen(ShouldPrint, WXPaint,Status)->
+printToScreen(ShouldPrint, WXPaint, Status) ->
   case (ShouldPrint) of
     true ->
       [{_, Player1_0}] = ets:lookup(statistics, 1.0),
@@ -117,7 +117,7 @@ printToScreen(ShouldPrint, WXPaint,Status)->
       TeamOnePossessions = Player1_0 + Player1_1 + Player1_2 + Player1_3 + Player1_4 + Player1_5 + Player1_6 + Player1_7 + Player1_8 + Player1_9 + Player1_11,
       TeamTwoPossessions = Player2_0 + Player2_1 + Player2_2 + Player2_3 + Player2_4 + Player2_5 + Player2_6 + Player2_7 + Player2_8 + Player2_9 + ControlledPlayer,
       TotalNumberOfPossessions = TeamOnePossessions + TeamTwoPossessions,
-      wxDC:drawLabel(WXPaint, "Statistics:", {?PRINT_X_START + 2*?TAB, 100, ?PRINT_W_H, ?PRINT_W_H}),
+      wxDC:drawLabel(WXPaint, "Statistics:", {?PRINT_X_START + 2 * ?TAB, 100, ?PRINT_W_H, ?PRINT_W_H}),
       wxDC:drawLabel(WXPaint, "Total Number Of Ball Possesions: " ++ integer_to_list(TotalNumberOfPossessions), {?PRINT_X_START + 2 * ?TAB, ?PRINT_Y_START + 2 * ?TAB, ?PRINT_W_H, ?PRINT_W_H}),
       wxDC:drawLabel(WXPaint, "Team One - Number Of Ball Possesions: " ++ integer_to_list(TeamOnePossessions), {?PRINT_X_START + 2 * ?TAB, ?PRINT_Y_START + 3 * ?TAB, ?PRINT_W_H, ?PRINT_W_H}),
       wxDC:drawLabel(WXPaint, "Team Two - Number Of Ball Possesions: " ++ integer_to_list(TeamTwoPossessions), {?PRINT_X_START + 2 * ?TAB, ?PRINT_Y_START + 4 * ?TAB, ?PRINT_W_H, ?PRINT_W_H}),
@@ -132,10 +132,10 @@ printToScreen(ShouldPrint, WXPaint,Status)->
       drawBallPossessionsLabel("Player 7   - ", WXPaint, Player1_7, Player2_7, 9 * ?TAB),
       drawBallPossessionsLabel("Player 8   - ", WXPaint, Player1_8, Player2_8, 10 * ?TAB),
       drawBallPossessionsLabel("Player 9   - ", WXPaint, Player1_9, Player2_9, 11 * ?TAB),
-      wxDC:drawLabel(WXPaint, "Player 10 - "++integer_to_list(Player1_11) ++"                                   Controlled Player - "
-        ++ integer_to_list(ControlledPlayer), {?PRINT_X_START + 2 * ?TAB, ?PRINT_Y_START + 12 * ?TAB+ ?BIGGER_INDENTATIONS, ?PRINT_W_H, ?PRINT_W_H});
+      wxDC:drawLabel(WXPaint, "Player 10 - " ++ integer_to_list(Player1_11) ++ "                                   Controlled Player - "
+        ++ integer_to_list(ControlledPlayer), {?PRINT_X_START + 2 * ?TAB, ?PRINT_Y_START + 12 * ?TAB + ?BIGGER_INDENTATIONS, ?PRINT_W_H, ?PRINT_W_H});
     _ -> ignore
-  end .
+  end.
 
 drawBallPossessionsLabel(PlayerType, WXPaint, PlayerStatistics, Player2Statistics, Indentations) ->
   Text = PlayerType ++ integer_to_list(PlayerStatistics) ++ "                                   " ++ PlayerType ++ integer_to_list(Player2Statistics),

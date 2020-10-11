@@ -8,3 +8,4 @@ syntax: glob
 *.tmp
 *.beam
 target/
+.DS_Store

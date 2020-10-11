@@ -15,7 +15,6 @@
 
 
 pickNextMonitor(X, MonitorsNumber, MonitorsNames) ->
-
   case MonitorsNumber of
     1 ->
       [Monitor1] = MonitorsNames,
@@ -39,7 +38,7 @@ pickNextMonitor(X, MonitorsNumber, MonitorsNames) ->
       end;
     4 ->
       [Monitor1, Monitor2, Monitor3, Monitor4] = MonitorsNames,
-            X_Upper_Limit = ?X_Upper_Limit + 1,
+      X_Upper_Limit = ?X_Upper_Limit + 1,
       SectionWidth = X_Upper_Limit / MonitorsNumber,
       case {X < SectionWidth, X < 2 * SectionWidth, X < 3 * SectionWidth, X < 4 * SectionWidth + 100} of
         {true, _, _, _} -> Monitor1;
@@ -71,7 +70,7 @@ movementDrawing({X, Y_1}, {X, Y_2}, StepSize) ->
       end
   end;
 
-movementDrawing({X_1, Y_1} , {X_2, Y_2}, StepSize) ->
+movementDrawing({X_1, Y_1}, {X_2, Y_2}, StepSize) ->
   RelativeDistance = getDistance({X_1, Y_1}, {X_2, Y_2}) - StepSize,
   case RelativeDistance < 0 of
     true -> {X_2, Y_2};
@@ -114,7 +113,7 @@ ballMovementDrawing({X, Y_1}, {X, Y_2}, StepSize) ->
       end
   end;
 
-ballMovementDrawing({X_1, Y_1} , {X_2, Y_2}, StepSize) ->
+ballMovementDrawing({X_1, Y_1}, {X_2, Y_2}, StepSize) ->
   RelativeDistance = getDistance({X_1, Y_1}, {X_2, Y_2}) - StepSize,
   case RelativeDistance < 0 of
     true -> {X_2, Y_2};

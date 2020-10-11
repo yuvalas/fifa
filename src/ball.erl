@@ -75,7 +75,7 @@ moving(cast, {switchMonitor, MonitorsNumber, MonitorsNames}, Data) ->
   ID = get(id),
   monitor:switchedMonitor(get(monitor), ID),
   global:unregister_name(ID),
-  monitor:addBall(NextOwner, {ID, get(location), get(dest),old}),
+  monitor:addBall(NextOwner, {ID, get(location), get(dest), old}),
   {stop, normal, Data}.
 
 terminate(_Reason, _StateName, _StatData) ->

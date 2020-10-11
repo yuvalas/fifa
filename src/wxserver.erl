@@ -377,17 +377,20 @@ computerLogic(Id, GivenX, GivenY, BallX, BallY, BallpreviousOwner, BallWidth, Gi
     if
       ((IsTeam2Near == near) and (Id >= 2.0) and (Id < 3)) ->
         insertBallsOwnerAndPosition(Id, GivenY, WXPaint, XLocation, BallImg, 0, GivenX , GivenY, RefereePic),
-        if (NewDir < 0) ->
+        ets:insert(isOwner, {owned, 1}),
+        if ((NewDir < 0) or ((Id == 2.0) and (NewDir == 0)) ) ->
           ets:insert(isOwner, {kickDirection, 1});
           true -> continue
         end;
       ((IsTeam1Near == near) and (Id >= 1.0) and (Id < 2)) ->
         insertBallsOwnerAndPosition(Id, GivenY, WXPaint, XLocation, BallImg, 0, GivenX , GivenY, RefereePic),
-        if (NewDir > 0) ->
+        ets:insert(isOwner, {owned, 1}),
+        if ((NewDir > 0) or ((Id == 1.0) and (NewDir == 0))) ->
           ets:insert(isOwner, {kickDirection, 2});
           true -> continue
         end;
       true ->
+        ets:insert(isOwner, {owned, 0}),
         ets:insert(ball, {previousOwner, BallpreviousOwner})
     end;
     true -> continue
@@ -456,9 +459,10 @@ mainLogic(WXPaint, Id, Type, {GivenX, GivenY}, Args) ->
         wxImage:destroy(PicToDraw);
         true ->
           [{_, KickDirection}] = ets:lookup(isOwner, kickDirection),
+          [{_, Owned}] = ets:lookup(isOwner, owned),
           if (IsBallBelongToCntrPlayer == 0) ->
             if
-              (KickDirection == 0) ->
+              ((KickDirection == 0) and (Owned == 0)) ->
                 updateBallEts(WXPaint, BallImg, BallX, BallY, RefereePic);
               (KickDirection == 1) ->
                 {NewPosX, NewPosY} = common:ballMovementDrawing({BallX, BallY}, randomNetDest(left), 40),
@@ -544,6 +548,7 @@ initializeBallEts() ->
   ets:insert(ball, {ballY, ?BALL_INIT_Y}),
   ets:insert(isOwner, {kickDirection, 0}),
   ets:insert(isOwner, {ball, 0}),
+  ets:insert(isOwner, {owned, 0}),
   ets:insert(ball, {destX, 0}),
   ets:insert(ball, {destY, 0}),
   ets:insert(ball, {togg, down}),
