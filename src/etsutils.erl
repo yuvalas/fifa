@@ -13,8 +13,7 @@
 %% API
 -export([generateEts/0]).
 
-
-generateEts()->
+generateEts() ->
   ets:new(playersETS, [set, public, named_table]),
   ets:new(monitors, [set, public, named_table]),
   ets:new(generalState, [set, public, named_table]),
@@ -32,6 +31,7 @@ generateEts()->
   ets:new(isOwner, [set, public, named_table]),
   ets:insert(isOwner, {ball, 0}),   % 0 - no movement of the ball, 1 - kick left, 2 - kick right
   ets:insert(isOwner, {kickDirection, 0}), % "1" - if the ball need to be kicked left, "2" - right, "0" - no kick.
+  ets:insert(isOwner, {owned, 0}),
 
   ets:new(statistics, [set, public, named_table]),
   ets:insert(statistics, {1.0, 0}),
