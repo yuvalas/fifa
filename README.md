@@ -1,9 +1,9 @@
-#FIFA Distributed Game 
+# FIFA Distributed Game 
 
-##Functional Programming in Concurrent and Distributed Systems - Ben Gurion Universityend
+## Functional Programming in Concurrent and Distributed Systems - Ben Gurion Universityend
 
-###By: Moshe Dahan and Yuval Assayag
-###Instructors: Dr. Yehuda Ben-Shimol and Mr. David Leon
+### By: Moshe Dahan and Yuval Assayag
+### Instructors: Dr. Yehuda Ben-Shimol and Mr. David Leon
 
 **Overview**			
 Our project simulates a FIFA game. It is based on Erlang, OTP interface, and graphics by WxWidgets.
