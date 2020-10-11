@@ -56,6 +56,7 @@ The design is based on OTP in a master-slave behavior. The structure and hierarc
 **Files Description**
 
 `wxserver.erl `- contains the main logic of our project. It is implementing gen_server behavior and uses WxWidget capabilities for the UI. Contains ~780 code lines.
+
 `monitor.erl `- contains the code for the four servers each server should be responsible for a quarter of the soccer field. It is implementing gen_server behavior. Contains ~260 code lines.
 
 `controlledplayer.erl`- contains the code for the FSM of the controlled player. Implement using gen_Statem behavior.  Contains ~80 code lines.
