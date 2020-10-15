@@ -13,40 +13,72 @@
 
 -export([pickNextMonitor/3, movementDrawing/3, getDistance/2, ballMovementDrawing/3]).
 
+% TODO uncomment me if the functions below deosn't work.
+%%pickNextMonitor(X, MonitorsNumber, MonitorsNames) ->
+%%  case MonitorsNumber of
+%%    1 ->
+%%      [Monitor1] = MonitorsNames,
+%%      Monitor1;
+%%    2 ->
+%%      [Monitor1, Monitor2] = MonitorsNames,
+%%      X_Upper_Limit = ?X_Upper_Limit + 1,
+%%      SectionWidth = X_Upper_Limit / MonitorsNumber,
+%%      case {X < SectionWidth, X < 2 * SectionWidth + 100} of
+%%        {true, _} -> Monitor1;
+%%        {false, true} -> Monitor2
+%%      end;
+%%    3 ->
+%%      [Monitor1, Monitor2, Monitor3] = MonitorsNames,
+%%      X_Upper_Limit = ?X_Upper_Limit + 1,
+%%      SectionWidth = X_Upper_Limit / MonitorsNumber,
+%%      case {X < SectionWidth, X < 2 * SectionWidth, X < 3 * SectionWidth + 100} of
+%%        {true, _, _} -> Monitor1;
+%%        {false, true, _} -> Monitor2;
+%%        {false, false, true} -> Monitor3
+%%      end;
+%%    4 ->
+%%      [Monitor1, Monitor2, Monitor3, Monitor4] = MonitorsNames,
+%%      X_Upper_Limit = ?X_Upper_Limit + 1,
+%%      SectionWidth = X_Upper_Limit / MonitorsNumber,
+%%      case {X < SectionWidth, X < 2 * SectionWidth, X < 3 * SectionWidth, X < 4 * SectionWidth + 100} of
+%%        {true, _, _, _} -> Monitor1;
+%%        {false, true, _, _} -> Monitor2;
+%%        {false, false, true, _} -> Monitor3;
+%%        {false, false, false, true} -> Monitor4
+%%      end
+%%  end.
 
-pickNextMonitor(X, MonitorsNumber, MonitorsNames) ->
-  case MonitorsNumber of
-    1 ->
-      [Monitor1] = MonitorsNames,
-      Monitor1;
-    2 ->
-      [Monitor1, Monitor2] = MonitorsNames,
-      X_Upper_Limit = ?X_Upper_Limit + 1,
-      SectionWidth = X_Upper_Limit / MonitorsNumber,
-      case {X < SectionWidth, X < 2 * SectionWidth + 100} of
-        {true, _} -> Monitor1;
-        {false, true} -> Monitor2
-      end;
-    3 ->
-      [Monitor1, Monitor2, Monitor3] = MonitorsNames,
-      X_Upper_Limit = ?X_Upper_Limit + 1,
-      SectionWidth = X_Upper_Limit / MonitorsNumber,
-      case {X < SectionWidth, X < 2 * SectionWidth, X < 3 * SectionWidth + 100} of
-        {true, _, _} -> Monitor1;
-        {false, true, _} -> Monitor2;
-        {false, false, true} -> Monitor3
-      end;
-    4 ->
-      [Monitor1, Monitor2, Monitor3, Monitor4] = MonitorsNames,
-      X_Upper_Limit = ?X_Upper_Limit + 1,
-      SectionWidth = X_Upper_Limit / MonitorsNumber,
-      case {X < SectionWidth, X < 2 * SectionWidth, X < 3 * SectionWidth, X < 4 * SectionWidth + 100} of
-        {true, _, _, _} -> Monitor1;
-        {false, true, _, _} -> Monitor2;
-        {false, false, true, _} -> Monitor3;
-        {false, false, false, true} -> Monitor4
-      end
-  end.
+
+pickNextMonitor(X, 4, MonitorsNames) ->
+  [Monitor1, Monitor2, Monitor3, Monitor4] = MonitorsNames,
+  SectionWidth = getSectionWidth(4),
+  case {X < SectionWidth, X < 2 * SectionWidth, X < 3 * SectionWidth, X < 4 * SectionWidth + 100} of
+    {true, _, _, _} -> Monitor1;
+    {false, true, _, _} -> Monitor2;
+    {false, false, true, _} -> Monitor3;
+    {false, false, false, true} -> Monitor4
+  end;
+pickNextMonitor(X, 3, MonitorsNames) ->
+  [Monitor1, Monitor2, Monitor3] = MonitorsNames,
+  SectionWidth = getSectionWidth(3),
+  case {X < SectionWidth, X < 2 * SectionWidth, X < 3 * SectionWidth + 100} of
+    {true, _, _} -> Monitor1;
+    {false, true, _} -> Monitor2;
+    {false, false, true} -> Monitor3
+  end;
+pickNextMonitor(X, 2, MonitorsNames) ->
+  [Monitor1, Monitor2] = MonitorsNames,
+  SectionWidth = getSectionWidth(2),
+  case {X < SectionWidth, X < 2 * SectionWidth + 100} of
+    {true, _} -> Monitor1;
+    {false, true} -> Monitor2
+  end;
+pickNextMonitor(_, 1, MonitorsNames) ->
+  [Monitor1] = MonitorsNames,
+  Monitor1.
+
+getSectionWidth(MonitorsNumber) ->
+  ((?X_Upper_Limit + 1) / MonitorsNumber).
 
 getDistance({X1, Y1}, {X2, Y2}) ->
   DiffX = X1 - X2,

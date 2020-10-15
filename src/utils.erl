@@ -13,7 +13,7 @@
 -include_lib("wx/include/wx.hrl").
 -include_lib("stdlib/include/qlc.hrl").
 
--export([getComponentsLayoutList/0, loadPlayerImage/4, loadImageControlledPlayer/4, printToScreen/3]).
+-export([getComponentsLayoutList/0, loadPlayerImage/4, loadImageControlledPlayer/4, printToScreen/3, initializeBallLocation/0]).
 
 
 loadPlayerImage(ID, Orientation, BallWidth, X) ->
@@ -48,10 +48,10 @@ loadImageControlledPlayer(Orientation, _, X, PreviousLocation) ->
         PreviousLocation > 0 ->
           NewX = X + 10;
         true ->
-          NewX = X - 20%?BALL_WIDTH_MULTIPLY_FACTOR * StepSize
+          NewX = X - 20
       end;
     Orientation < 0 ->
-      NewX = X - 20 %?BALL_WIDTH_MULTIPLY_FACTOR * StepSize
+      NewX = X - 20
   end,
   {NewX, Pic}.
 
@@ -108,21 +108,21 @@ printToScreen(ShouldPrint, WXPaint, Status) ->
       [{_, ControlledPlayer}] = ets:lookup(statistics, controlledPlayer),
       if Status == finishedGame ->
         Winner = whoIsTheWinner(),
-        wxDC:drawLabel(WXPaint, "Team " ++ integer_to_list(Winner) ++ " Wins", {?PRINT_X_START + 2 * ?TAB, ?PRINT_Y_START + ?TAB, ?PRINT_W_H, ?PRINT_W_H});
+        wxDC:drawLabel(WXPaint, "Team " ++ integer_to_list(Winner) ++ " Wins", {?PRINT_X_START + ?DOUBLE_TAB, ?PRINT_Y_START + ?TAB, ?PRINT_W_H, ?PRINT_W_H});
         true ->
           [{_, TeamOnePoints}] = ets:lookup(statistics, teamOnePoints),
           [{_, TeamTwoPoints}] = ets:lookup(statistics, teamTwoPoints),
-          wxDC:drawLabel(WXPaint, "Team One Points: " ++ integer_to_list(TeamOnePoints) ++ "                       Team Two Points: " ++ integer_to_list(TeamTwoPoints), {?PRINT_X_START + 2 * ?TAB, ?PRINT_Y_START + ?TAB, ?PRINT_W_H, ?PRINT_W_H})
+          wxDC:drawLabel(WXPaint, "Team One Points: " ++ integer_to_list(TeamOnePoints) ++ "                       Team Two Points: " ++ integer_to_list(TeamTwoPoints), {?PRINT_X_START + ?DOUBLE_TAB, ?PRINT_Y_START + ?TAB, ?PRINT_W_H, ?PRINT_W_H})
       end,
       TeamOnePossessions = Player1_0 + Player1_1 + Player1_2 + Player1_3 + Player1_4 + Player1_5 + Player1_6 + Player1_7 + Player1_8 + Player1_9 + Player1_11,
       TeamTwoPossessions = Player2_0 + Player2_1 + Player2_2 + Player2_3 + Player2_4 + Player2_5 + Player2_6 + Player2_7 + Player2_8 + Player2_9 + ControlledPlayer,
       TotalNumberOfPossessions = TeamOnePossessions + TeamTwoPossessions,
-      wxDC:drawLabel(WXPaint, "Statistics:", {?PRINT_X_START + 2 * ?TAB, 100, ?PRINT_W_H, ?PRINT_W_H}),
-      wxDC:drawLabel(WXPaint, "Total Number Of Ball Possesions: " ++ integer_to_list(TotalNumberOfPossessions), {?PRINT_X_START + 2 * ?TAB, ?PRINT_Y_START + 2 * ?TAB, ?PRINT_W_H, ?PRINT_W_H}),
-      wxDC:drawLabel(WXPaint, "Team One - Number Of Ball Possesions: " ++ integer_to_list(TeamOnePossessions), {?PRINT_X_START + 2 * ?TAB, ?PRINT_Y_START + 3 * ?TAB, ?PRINT_W_H, ?PRINT_W_H}),
-      wxDC:drawLabel(WXPaint, "Team Two - Number Of Ball Possesions: " ++ integer_to_list(TeamTwoPossessions), {?PRINT_X_START + 2 * ?TAB, ?PRINT_Y_START + 4 * ?TAB, ?PRINT_W_H, ?PRINT_W_H}),
-      wxDC:drawLabel(WXPaint, "Team 1 - Possesions                       Team 2 Possesions", {?PRINT_X_START + 2 * ?TAB, ?PRINT_Y_START + 5 * ?TAB, ?PRINT_W_H, ?PRINT_W_H}),
-      drawBallPossessionsLabel("Goalie      - ", WXPaint, Player1_0, Player2_0, 2 * ?TAB),
+      wxDC:drawLabel(WXPaint, "Statistics:", {?PRINT_X_START + ?DOUBLE_TAB, 100, ?PRINT_W_H, ?PRINT_W_H}),
+      wxDC:drawLabel(WXPaint, "Total Number Of Ball Possesions: " ++ integer_to_list(TotalNumberOfPossessions), {?PRINT_X_START + ?DOUBLE_TAB, ?PRINT_Y_START + 2 * ?TAB, ?PRINT_W_H, ?PRINT_W_H}),
+      wxDC:drawLabel(WXPaint, "Team One - Number Of Ball Possesions: " ++ integer_to_list(TeamOnePossessions), {?PRINT_X_START + ?DOUBLE_TAB, ?PRINT_Y_START + 3 * ?TAB, ?PRINT_W_H, ?PRINT_W_H}),
+      wxDC:drawLabel(WXPaint, "Team Two - Number Of Ball Possesions: " ++ integer_to_list(TeamTwoPossessions), {?PRINT_X_START + ?DOUBLE_TAB, ?PRINT_Y_START + 4 * ?TAB, ?PRINT_W_H, ?PRINT_W_H}),
+      wxDC:drawLabel(WXPaint, "Team 1 - Possesions                       Team 2 Possesions", {?PRINT_X_START + ?DOUBLE_TAB, ?PRINT_Y_START + 5 * ?TAB, ?PRINT_W_H, ?PRINT_W_H}),
+      drawBallPossessionsLabel("Goalie      - ", WXPaint, Player1_0, Player2_0, ?DOUBLE_TAB),
       drawBallPossessionsLabel("Player 1   - ", WXPaint, Player1_1, Player2_1, 3 * ?TAB),
       drawBallPossessionsLabel("Player 2   - ", WXPaint, Player1_2, Player2_2, 4 * ?TAB),
       drawBallPossessionsLabel("Player 3   - ", WXPaint, Player1_3, Player2_3, 5 * ?TAB),
@@ -139,10 +139,14 @@ printToScreen(ShouldPrint, WXPaint, Status) ->
 
 drawBallPossessionsLabel(PlayerType, WXPaint, PlayerStatistics, Player2Statistics, Indentations) ->
   Text = PlayerType ++ integer_to_list(PlayerStatistics) ++ "                                   " ++ PlayerType ++ integer_to_list(Player2Statistics),
-  wxDC:drawLabel(WXPaint, Text, {?PRINT_X_START + 2 * ?TAB, ?PRINT_Y_START + Indentations + ?BIGGER_INDENTATIONS, ?PRINT_W_H, ?PRINT_W_H}).
+  wxDC:drawLabel(WXPaint, Text, {?PRINT_X_START + ?DOUBLE_TAB, ?PRINT_Y_START + Indentations + ?BIGGER_INDENTATIONS, ?PRINT_W_H, ?PRINT_W_H}).
 
 whoIsTheWinner() ->
   [{_, TeamOnePoints}] = ets:lookup(statistics, teamOnePoints),
   if (TeamOnePoints == 3) -> 1;
     true -> 2
   end.
+
+initializeBallLocation()->
+  ets:insert(ball, {ballX, ?BALL_INIT_X}),
+  ets:insert(ball, {ballY, ?BALL_INIT_Y}).

@@ -24,8 +24,7 @@ generateEts() ->
   ets:insert(controlledplayerX, {xCoordinate, 1}),
 
   ets:new(ball, [set, public, named_table]),
-  ets:insert(ball, {ballX, ?BALL_INIT_X}),
-  ets:insert(ball, {ballY, ?BALL_INIT_Y}),
+  utils:initializeBallLocation(),
   ets:insert(ball, {previousOwner, 0}),
 
   ets:new(isOwner, [set, public, named_table]),

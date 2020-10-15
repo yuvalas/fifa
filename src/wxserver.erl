@@ -103,7 +103,7 @@ handle_event(#wx{obj = _Panel, event = #wxMouse{type = motion, x = MouseX, y = M
       DistanceLowerX = ?X_Lower_Limit + ?CHARACTER_WIDTH,
       DistanceUpperX = ?X_Upper_Limit - ?CHARACTER_WIDTH,
       DistanceLowerY = ?Y_Lower_Limit + ?CHARACTER_WIDTH,
-      DistanceUpperY = ?MAX_PLAYER_Y - ?CHARACTER_WIDTH,
+      DistanceUpperY = ?Y_Upper_Limit - ?CHARACTER_WIDTH,
       case MouseX < DistanceLowerX of
         false -> X1Coordinate = MouseX;
         _ -> X1Coordinate = DistanceLowerX
@@ -301,8 +301,8 @@ mainLoop(WXPaint) ->
       displayCharacters(WXPaint, List),
       ShouldPrint = false;
     startGame ->
-      wxDC:drawLabel(WXPaint, "Welcome to Fifa Distrebuted Game!", {?PRINT_X_START, 300, ?PRINT_W_H, ?PRINT_W_H}),
-      wxDC:drawLabel(WXPaint, "Click left mouse button to start", {?PRINT_X_START, 300 + ?TAB, ?PRINT_W_H, ?PRINT_W_H}),
+      wxDC:drawLabel(WXPaint, "Welcome to Fifa Distrebuted Game!", {?PRINT_X_START, ?PRINT_W_H, ?PRINT_W_H, ?PRINT_W_H}),
+      wxDC:drawLabel(WXPaint, "Click left mouse button to start", {?PRINT_X_START, ?PRINT_W_H + ?TAB, ?PRINT_W_H, ?PRINT_W_H}),
       ShouldPrint = false;
     resetRound ->
       WXIMGStage = wxImage:new(?STAGE_IMAGE),
@@ -544,8 +544,7 @@ startRound(RoundNum, ShouldInsertControlledPlayer) ->
   monitor:addListOfPlayers(?MONITORD, MonitorDPlayers).
 
 initializeBallEts() ->
-  ets:insert(ball, {ballX, ?BALL_INIT_X}),
-  ets:insert(ball, {ballY, ?BALL_INIT_Y}),
+  utils:initializeBallLocation(),
   ets:insert(isOwner, {kickDirection, 0}),
   ets:insert(isOwner, {ball, 0}),
   ets:insert(isOwner, {owned, 0}),
@@ -728,13 +727,11 @@ updateScreenSizes(M, N, [H | T], MonitorNames, AllPlayersAndBall) ->
 isFinishedGame(LocationX, LocationY) ->
   if (LocationX < 50) and ((LocationY < ?GATE_UPPER_LIMIT) and (LocationY > ?GATE_LOWER_LIMIT)) ->
     IsFinished = goalUpdate(teamTwoPoints),
-    ets:insert(ball, {ballX, ?BALL_INIT_X}),
-    ets:insert(ball, {ballY, ?BALL_INIT_Y}),
+    utils:initializeBallLocation(),
     IsFinished;
     (LocationX > 1384) and ((LocationY < ?GATE_UPPER_LIMIT) and (LocationY > ?GATE_LOWER_LIMIT)) ->
       IsFinished = goalUpdate(teamOnePoints),
-      ets:insert(ball, {ballX, ?BALL_INIT_X}),
-      ets:insert(ball, {ballY, ?BALL_INIT_Y}),
+      utils:initializeBallLocation(),
       IsFinished;
     true -> 0
   end.
