@@ -140,35 +140,68 @@ Then you should type the following command in this manner:
 On the first terminal:
 
 
-`erl -sname monitorA -setcookie cookie`
+`erl -sname monitorA`
 
 
 On the second terminal:
 
 
-`erl -sname monitorB -setcookie cookie`
+`erl -sname monitorB`
 
 
 On the third terminal:
 
 
-`erl -sname monitorC -setcookie cookie`
+`erl -sname monitorC`
 
 
 On the fourth terminal:
 
 
-`erl -sname monitorD -setcookie cookie`
+`erl -sname monitorD`
 
 
 
 In the 5th terminal you should write these two commands:
 
 ```
-erl -sname main -smp -setcookie cookie
+erl -sname main -smp
 c(wxserver).
 wxserver:startme().
 ```
 
-To run the project on five different computers, you have to open 5 terminals each terminal on different computers, in the path that contains all of the erlang files (.erl) and follow the same instructions described above.
+To run the project on five different computers, you have to open 5 terminals each terminal on different computers, in the path that contains all of the erlang files (.erl) and follow the insctructiob described below:
+
+On the first computer:
+
+
+`erl -sname monitorA -setcookie cookie`
+
+
+On the second computer:
+
+
+`erl -sname monitorB -setcookie cookie`
+
+
+On the third computer:
+
+
+`erl -sname monitorC -setcookie cookie`
+
+
+On the fourth computer:
+
+
+`erl -sname monitorD -setcookie cookie`
+
+
+
+In the 5th computer you should write these two commands:
+
+```
+erl -sname main -smp -setcookie cookie
+c(wxserver).
+wxserver:startme().
+```
 
