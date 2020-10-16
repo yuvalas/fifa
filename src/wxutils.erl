@@ -14,7 +14,7 @@
 -include("../params.hrl").
 
 %% API
--export([regainConnectionToMonitor/1, kick/1, resetRound/0, startRound/2, mainLoop/1]).
+-export([regainConnectionToMonitor/1, kick/1, resetRound/0, startRound/2, mainLoop/1, setUpConnectionWithAllServers/0]).
 
 
 mainLoop(WXPaint) ->
@@ -272,6 +272,8 @@ restartMonitors() ->
     rpc:multicall(?MONITOR_PROCESSES, compile, file, [monitor]),
     rpc:multicall(?MONITOR_PROCESSES, compile, file, [wxserver]),
     rpc:multicall(?MONITOR_PROCESSES, compile, file, [utils]),
+    rpc:multicall(?MONITOR_PROCESSES, compile, file, [etsutils]),
+    rpc:multicall(?MONITOR_PROCESSES, compile, file, [wxutils]),
     rpc:call(?MONITOR_LONG_NAME_A, monitor, startme, [?MONITORA, 1, 4, [?MONITORA, ?MONITORB, ?MONITORC, ?MONITORD]]),
     rpc:call(?MONITOR_LONG_NAME_B, monitor, startme, [?MONITORB, 2, 4, [?MONITORA, ?MONITORB, ?MONITORC, ?MONITORD]]),
     rpc:call(?MONITOR_LONG_NAME_C, monitor, startme, [?MONITORC, 3, 4, [?MONITORA, ?MONITORB, ?MONITORC, ?MONITORD]]),
@@ -475,6 +477,7 @@ compileAllFiles(MonitorID) ->
   rpc:call(MonitorID, compile, file, [utils]),
   rpc:call(MonitorID, compile, file, [etsutils]),
   rpc:call(MonitorID, compile, file, [monitor]),
+  rpc:call(MonitorID, compile, file, [wxutils]),
   rpc:call(MonitorID, compile, file, [common]).
 
 updateScreenSizes(N, N, [H], MonitorNames, AllPlayersAndBall) ->
