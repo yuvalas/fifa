@@ -55,8 +55,10 @@ While building the simulation, we tried to:
 Maximize usage of  OTP and native Erlang modules, messaging, capabilities, etc. 						
 Isolate the game components and enable them to run concurrently. 
 Resiliency to monitor crashes.
-Design 	
-The design is based on OTP in a master-slave behavior. The structure and hierarchy are shown in the figure below. Following this OTP model simplified the management of the process and servers. To monitor the existence of the processes we used start_link and monitor Erlang’s functions. In the case of a crash the master (wxWidget server) responsible to the divide the work to its remaining slaves (the other servers). 
+
+**Design** 	
+
+The design is based on OTP in a master-slave behavior. The structure and hierarchy are shown in the figure below. Following this OTP model simplified the management of the process and servers. To monitor the existence of the processes we used start_link and monitor Erlang’s functions. In the case of a crash the master (wxWidget server) is responsible for dividingthe work to its remaining slaves (the other servers). 
 
 **Files Description**
 
