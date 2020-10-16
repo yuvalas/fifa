@@ -141,7 +141,7 @@ First go to params.hrl and change the name of the following variables:
 -define(MONITOR_LONG_NAME_A, 'monitorA@<Your-Computer-Name>').
 ```
 
-In order to run the project locally (on one compute) you have to open 5 terminals on the path that contains all of the erlang files (.erl).
+In order to run the project locally (on one computer) you have to open 5 terminals on the path that contains all of the erlang files (.erl).
 
 Then you should type the following command in this manner:
 
