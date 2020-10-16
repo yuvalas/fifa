@@ -13,41 +13,6 @@
 
 -export([pickNextMonitor/3, movementDrawing/3, getDistance/2, ballMovementDrawing/3]).
 
-% TODO uncomment me if the functions below deosn't work.
-%%pickNextMonitor(X, MonitorsNumber, MonitorsNames) ->
-%%  case MonitorsNumber of
-%%    1 ->
-%%      [Monitor1] = MonitorsNames,
-%%      Monitor1;
-%%    2 ->
-%%      [Monitor1, Monitor2] = MonitorsNames,
-%%      X_Upper_Limit = ?X_Upper_Limit + 1,
-%%      SectionWidth = X_Upper_Limit / MonitorsNumber,
-%%      case {X < SectionWidth, X < 2 * SectionWidth + 100} of
-%%        {true, _} -> Monitor1;
-%%        {false, true} -> Monitor2
-%%      end;
-%%    3 ->
-%%      [Monitor1, Monitor2, Monitor3] = MonitorsNames,
-%%      X_Upper_Limit = ?X_Upper_Limit + 1,
-%%      SectionWidth = X_Upper_Limit / MonitorsNumber,
-%%      case {X < SectionWidth, X < 2 * SectionWidth, X < 3 * SectionWidth + 100} of
-%%        {true, _, _} -> Monitor1;
-%%        {false, true, _} -> Monitor2;
-%%        {false, false, true} -> Monitor3
-%%      end;
-%%    4 ->
-%%      [Monitor1, Monitor2, Monitor3, Monitor4] = MonitorsNames,
-%%      X_Upper_Limit = ?X_Upper_Limit + 1,
-%%      SectionWidth = X_Upper_Limit / MonitorsNumber,
-%%      case {X < SectionWidth, X < 2 * SectionWidth, X < 3 * SectionWidth, X < 4 * SectionWidth + 100} of
-%%        {true, _, _, _} -> Monitor1;
-%%        {false, true, _, _} -> Monitor2;
-%%        {false, false, true, _} -> Monitor3;
-%%        {false, false, false, true} -> Monitor4
-%%      end
-%%  end.
-
 
 pickNextMonitor(X, 4, MonitorsNames) ->
   [Monitor1, Monitor2, Monitor3, Monitor4] = MonitorsNames,
@@ -107,17 +72,11 @@ movementDrawing({X_1, Y_1}, {X_2, Y_2}, StepSize) ->
   case RelativeDistance < 0 of
     true -> {X_2, Y_2};
     _ ->
-      Slope = (Y_2 - Y_1) / (X_2 - X_1),
-      SlopeSquared = math:pow(Slope, 2),
-      StepSquared = math:pow(StepSize, 2),
-      Small_X_Step = math:sqrt(StepSquared / (SlopeSquared + 1)),
-      Small_Y_Step = Small_X_Step * Slope,
-      Direction_X = X_1 - X_2,
+      {Slope, Direction_Y, Direction_X, Small_Y_Step, Small_X_Step} = calcDirections(X_1,Y_1,X_2,Y_2,StepSize),
       if Direction_X < 0 ->
         NextX = X_1 + Small_X_Step;
         true -> NextX = X_1 - Small_X_Step
       end,
-      Direction_Y = Y_1 - Y_2,
       if (((Direction_Y < 0) and (Slope > 0)) or ((Direction_Y > 0) and (Slope < 0))) ->
         NextY = Y_1 + Small_Y_Step,
         {NextX, NextY};
@@ -137,12 +96,11 @@ ballMovementDrawing({X, Y_1}, {X, Y_2}, StepSize) ->
     _ ->
       case Y_1 > Y_2 of
         true ->
-          NextY = Y_1 - StepSize,
-          {X, NextY};
+          NextY = Y_1 - StepSize;
         false ->
-          NextY = Y_1 + StepSize,
-          {X, NextY}
-      end
+          NextY = Y_1 + StepSize
+      end,
+      {X, NextY}
   end;
 
 ballMovementDrawing({X_1, Y_1}, {X_2, Y_2}, StepSize) ->
@@ -150,22 +108,25 @@ ballMovementDrawing({X_1, Y_1}, {X_2, Y_2}, StepSize) ->
   case RelativeDistance < 0 of
     true -> {X_2, Y_2};
     _ ->
-      Slope = (Y_2 - Y_1) / (X_2 - X_1),
-      SlopeSquared = math:pow(Slope, 2),
-      StepSquared = math:pow(StepSize, 2),
-      Small_X_Step = math:sqrt(StepSquared / (SlopeSquared + 1)),
-      Small_Y_Step = Small_X_Step * Slope,
-      Direction_X = X_1 - X_2,
+      {Slope, Direction_Y, Direction_X, Small_Y_Step, Small_X_Step} = calcDirections(X_1,Y_1,X_2,Y_2,StepSize),
       if Direction_X < 0 ->
         NextX = X_1 + Small_X_Step;
         true -> NextX = X_1 - Small_X_Step
       end,
-      Direction_Y = Y_1 - Y_2,
       if (((Direction_Y < 0) and (Slope > 0)) or ((Direction_Y > 0) and (Slope < 0))) ->
-        NextY = Y_1 + Small_Y_Step,
-        {NextX, NextY};
+        NextY = Y_1 + Small_Y_Step;
         true ->
-          NextY = Y_1 - Small_Y_Step,
-          {NextX, NextY}
-      end
+          NextY = Y_1 - Small_Y_Step
+      end,
+      {NextX, NextY}
   end.
+
+calcDirections(X_1,Y_1,X_2,Y_2,StepSize)->
+  Slope = (Y_2 - Y_1) / (X_2 - X_1),
+  SlopeSquared = math:pow(Slope, 2),
+  StepSquared = math:pow(StepSize, 2),
+  Small_X_Step = math:sqrt(StepSquared / (SlopeSquared + 1)),
+  Small_Y_Step = Small_X_Step * Slope,
+  Direction_X = X_1 - X_2,
+  Direction_Y = Y_1 - Y_2,
+  {Slope, Direction_Y, Direction_X, Small_Y_Step, Small_X_Step} .
