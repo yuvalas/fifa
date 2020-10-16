@@ -14,7 +14,7 @@
 -include("../params.hrl").
 
 %% API
--export([regainConnectionToMonitor/1, kick/1, resetRound/0, startRound/2, mainLoop/1, setUpConnectionWithAllServers/0]).
+-export([regainConnectionToMonitor/1, kick/1, resetRound/0, startRound/2, mainLoop/1, setUpConnectionWithAllServers/0, superviseAllMonitors/0]).
 
 
 mainLoop(WXPaint) ->
@@ -174,7 +174,7 @@ receiveBlock(Monitor) ->
 
 locateBall(WhichTeam, PlayerX, PlayerY, BallX, BallY) ->
   HowFarIsBall = common:getDistance({PlayerX, PlayerY}, {BallX, BallY}),
-  if ((WhichTeam == 2) and (HowFarIsBall < 26)) or ((WhichTeam == 1) and (HowFarIsBall < 26)) ->
+  if ((WhichTeam == 2) and (HowFarIsBall < 30)) or ((WhichTeam == 1) and (HowFarIsBall < 26)) ->
     IsNear = near;
     true -> IsNear = far
   end,
