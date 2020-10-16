@@ -45,7 +45,7 @@
 -define(PRINT_Y_START, 130).
 -define(PRINT_W_H, 300).
 -define(TAB, 30).
--define(DOUBLE_TAB, 30).
+-define(DOUBLE_TAB, 60).
 -define(BIGGER_INDENTATIONS, 120).
 
 % Ball Constants.
