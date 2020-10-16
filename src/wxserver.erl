@@ -28,6 +28,7 @@ startme() ->
   compile:file(common),
   compile:file(utils),
   compile:file(etsutils),
+  compile:file(wxutils),
   WX = wx:new(),
   wx_object:start_link({global, main}, ?MODULE, WX, []).
 
@@ -64,6 +65,7 @@ initialize(ID) ->
     rpc:multicall(?MONITOR_PROCESSES, compile, file, [wxserver]),
     rpc:multicall(?MONITOR_PROCESSES, compile, file, [utils]),
     rpc:multicall(?MONITOR_PROCESSES, compile, file, [etsutils]),
+    rpc:multicall(?MONITOR_PROCESSES, compile, file, [wxutils]),
     rpc:call(?MONITOR_LONG_NAME_A, monitor, startme, [?MONITORA, 1, 4, [?MONITORA, ?MONITORB, ?MONITORC, ?MONITORD]]),
     rpc:call(?MONITOR_LONG_NAME_B, monitor, startme, [?MONITORB, 2, 4, [?MONITORA, ?MONITORB, ?MONITORC, ?MONITORD]]),
     rpc:call(?MONITOR_LONG_NAME_C, monitor, startme, [?MONITORC, 3, 4, [?MONITORA, ?MONITORB, ?MONITORC, ?MONITORD]]),
