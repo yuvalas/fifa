@@ -134,7 +134,7 @@ printToScreen(ShouldPrint, WXPaint, Status) ->
       drawBallPossessionsLabel("Player 9   - ", WXPaint, Player1_9, Player2_9, 11 * ?TAB),
       wxDC:drawLabel(WXPaint, "Player 10 - " ++ integer_to_list(Player1_11) ++ "                                   Controlled Player - "
         ++ integer_to_list(ControlledPlayer), {?PRINT_X_START + 2 * ?TAB, ?PRINT_Y_START + 12 * ?TAB + ?BIGGER_INDENTATIONS, ?PRINT_W_H, ?PRINT_W_H});
-    _ -> ignore
+    _ -> continue
   end.
 
 drawBallPossessionsLabel(PlayerType, WXPaint, PlayerStatistics, Player2Statistics, Indentations) ->

@@ -111,7 +111,7 @@ handle_cast({insertComponent, BallOrPlayerID, Arguments}, Data) ->
   case MonitorID of
     [] ->
       ets:insert(Data#stateRecord.etsAll, {BallOrPlayerID, Arguments});
-    _ -> ignore
+    _ -> continue
   end,
   {noreply, Data};
 
@@ -171,7 +171,7 @@ handle_cast({refreshActiveMonitors, ID, MonitorsNumber, MonitorsNames, Component
       ball ->
         {Destination} = Args,
         ball:startme(MyId, Location, Destination, Data#stateRecord.monitorName);
-      _ -> ignore
+      _ -> continue
     end end,
   lists:foreach(FunForEach2, ComponentsInMonitor),
   {noreply, NewState};
