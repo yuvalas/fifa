@@ -134,16 +134,18 @@ It is critical to plan the gen_server and gen_statem prior to the coding phase.
 
 **User Manual**
 
+Local Display:
+
+In order to run the project locally (on one computer) you have to open 5 terminals on the path that contains all of the erlang files (.erl).
+
 First go to params.hrl and change the name of the following variables:
 
 ```
--define(MONITOR_LONG_NAME_D, 'monitorD@<Your-Computer-Name>').
--define(MONITOR_LONG_NAME_C, 'monitorC@<Your-Computer-Name>').
--define(MONITOR_LONG_NAME_B, 'monitorB@<Your-Computer-Name>').
 -define(MONITOR_LONG_NAME_A, 'monitorA@<Your-Computer-Name>').
+-define(MONITOR_LONG_NAME_B, 'monitorB@<Your-Computer-Name>').
+-define(MONITOR_LONG_NAME_C, 'monitorC@<Your-Computer-Name>').
+-define(MONITOR_LONG_NAME_D, 'monitorD@<Your-Computer-Name>').
 ```
-
-In order to run the project locally (on one computer) you have to open 5 terminals on the path that contains all of the erlang files (.erl).
 
 Then you should type the following command in this manner:
 
@@ -181,38 +183,49 @@ c(wxserver).
 wxserver:startme().
 ```
 
+Distributed Display:
+
 To run the project on five different computers, you have to open 5 terminals each terminal on different computers, in the path that contains all of the erlang files (.erl) and follow the insctructiob described below:
+
+First go to params.hrl and change the name of the following variables:
+
+```
+-define(MONITOR_LONG_NAME_A, 'monitorA@<Computer-1-IP-Address>').
+-define(MONITOR_LONG_NAME_B, 'monitorB@<Computer-2-IP-Address>').
+-define(MONITOR_LONG_NAME_C, 'monitorC@<Computer-3-IP-Address>').
+-define(MONITOR_LONG_NAME_D, 'monitorD@<Computer-4-IP-Address>').
+```
 
 On the first computer:
 
 
-`erl -sname monitorA -setcookie cookie`
+`erl -name monitorA@<Computer-1-IP-Address> -setcookie <cookie-name>`
 
 
 On the second computer:
 
 
-`erl -sname monitorB -setcookie cookie`
+`erl -name monitorB@<Computer-2-IP-Address> -setcookie <cookie-name>`
 
 
 On the third computer:
 
 
-`erl -sname monitorC -setcookie cookie`
+`erl -name monitorC@<Computer-3-IP-Address> -setcookie <cookie-name>`
 
 
 On the fourth computer:
 
 
-`erl -sname monitorD -setcookie cookie`
+`erl -name monitorD@<Computer-4-IP-Address> -setcookie <cookie-name>`
 
 
-
-In the 5th computer you should write these two commands:
+On the 5th computer you should write these commands:
 
 ```
-erl -sname main -smp -setcookie cookie
+erl -name main@<Computer-5-IP-Address> -smp -setcookie <cookie-name>
 c(wxserver).
 wxserver:startme().
 ```
 
+Note: `<cookie-name>` must be identical on all 5 computers.
