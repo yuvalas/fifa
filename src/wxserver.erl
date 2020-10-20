@@ -62,6 +62,8 @@ initialize(ID) ->
     rpc:multicall(?MONITOR_PROCESSES, compile, file, [controlledplayer]),
     rpc:multicall(?MONITOR_PROCESSES, compile, file, [computerplayer]),
     rpc:multicall(?MONITOR_PROCESSES, compile, file, [monitor]),
+    rpc:multicall(?MONITOR_PROCESSES, compile, file, [common]),
+    rpc:multicall(?MONITOR_PROCESSES, compile, file, [ball]),
     rpc:multicall(?MONITOR_PROCESSES, compile, file, [wxserver]),
     rpc:multicall(?MONITOR_PROCESSES, compile, file, [utils]),
     rpc:multicall(?MONITOR_PROCESSES, compile, file, [etsutils]),

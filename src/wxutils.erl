@@ -272,6 +272,8 @@ restartMonitors() ->
     rpc:multicall(?MONITOR_PROCESSES, compile, file, [monitor]),
     rpc:multicall(?MONITOR_PROCESSES, compile, file, [wxserver]),
     rpc:multicall(?MONITOR_PROCESSES, compile, file, [utils]),
+    rpc:multicall(?MONITOR_PROCESSES, compile, file, [ball]),
+    rpc:multicall(?MONITOR_PROCESSES, compile, file, [common]),
     rpc:multicall(?MONITOR_PROCESSES, compile, file, [etsutils]),
     rpc:multicall(?MONITOR_PROCESSES, compile, file, [wxutils]),
     rpc:call(?MONITOR_LONG_NAME_A, monitor, startme, [?MONITORA, 1, 4, [?MONITORA, ?MONITORB, ?MONITORC, ?MONITORD]]),

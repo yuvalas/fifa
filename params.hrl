@@ -9,11 +9,10 @@
 -author("Moshe.Yuval").
 
 % Timing Constants.
--define(TimeToWait1, 60).
--define(TimeToWait2, 150).
--define(REFRESH_RATE, 150).
--define(MONITOR_REFRESH_RATE, 100).
--define(SCREEN_REFRESH_TIME, 30).
+-define(TimeToWait1, 50).
+-define(REFRESH_RATE, 75).
+-define(MONITOR_REFRESH_RATE, 50).
+-define(SCREEN_REFRESH_TIME, 15).
 
 % Configurations.
 -define(MONITOR_PROCESSES, [?MONITOR_LONG_NAME_A, ?MONITOR_LONG_NAME_B, ?MONITOR_LONG_NAME_C, ?MONITOR_LONG_NAME_D]).
@@ -21,10 +20,10 @@
 -define(MONITORB, 'monitorB').
 -define(MONITORC, 'monitorC').
 -define(MONITORD, 'monitorD').
--define(MONITOR_LONG_NAME_D, 'monitorD@IL01-PF1P52W').
--define(MONITOR_LONG_NAME_C, 'monitorC@IL01-PF1P52W').
--define(MONITOR_LONG_NAME_B, 'monitorB@IL01-PF1P52W').
--define(MONITOR_LONG_NAME_A, 'monitorA@IL01-PF1P52W').
+-define(MONITOR_LONG_NAME_D, 'monitorD@Yuval-Assayag').
+-define(MONITOR_LONG_NAME_C, 'monitorC@Yuval-Assayag').
+-define(MONITOR_LONG_NAME_B, 'monitorB@Yuval-Assayag').
+-define(MONITOR_LONG_NAME_A, 'monitorA@Yuval-Assayag').
 
 % Screen Constants.
 -define(BACKGROUND_COLOR, {200, 200, 200}).
