@@ -26,6 +26,7 @@ startme() ->
   compile:file(controlledplayer),
   compile:file(computerplayer),
   compile:file(common),
+  compile:file(monitor),
   compile:file(utils),
   compile:file(etsutils),
   compile:file(wxutils),
