@@ -35,14 +35,6 @@ Each server responsible for a certain slice of the screen - depending on how man
 In initialization time there are 4 regular servers running each of them responsible on a vertical rectangle which represents a quarter of the soccer field.
 Each screen monitors the objects within its boundaries.  
 
-**Who Is Entitled Of A Process?!**
-
-- Each player.
-- The ball.
-- Each goalie.
-- The controlled player
-All these processes run simultaneously and managed by the wx Widget server.
-
 **Strategies**
 
 - The first team strategy is to work randomly across the soccer field trying to block and score goals.
@@ -81,6 +73,7 @@ The design is based on OTP in a master-slave behavior. The structure and hierarc
 `params.hrl `- holds all the Macros (constants). Contains ~55 code lines.
 
 **Servers Crash Handling**
+
 As already explained the game is distributed over 5 computers (or terminals). 
 We decided to support servers crash handling under the assumption that several servers might lose connection during the game or crash for any other reason. This service has high resiliency and can survive with one functioning monitor.
 How does it work? 
@@ -116,20 +109,6 @@ Recursions are also a strong tool in functional programming.
 WX interface is full of options and enables us to add graphics to the game without having a lot of knowledge in the UI world.
 Using gen_server behavior is an easy way to manage async communication.
 Using gen_statem behavior to implement FSM as we have learned.
-
-**Main Difficulties and Obstacles**
-
-Understanding the WxWidget.
-Implement the async communication between the servers - using `gen_server`.
-Distribute the game over 4 monitors (split screens).
-Trying to implement a complex game with a lot of logic and components that work in parallel.
-Working together remotely on the Zoom platform. 
-
-**Conclusions**
-
-Scalability should be taken care of in the planning stage.
-ETS is a good source for sharing data between processes.
-It is critical to plan the gen_server and gen_statem prior to the coding phase.
 
 
 **User Manual**
