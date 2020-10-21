@@ -209,6 +209,6 @@ wxserver:startme().
 
 Note: `<cookie-name>` must be identical on all 5 computers.
 
-**erlang version**
+**Erlang Version**
 
 Erlang OTP 22 and 21 
